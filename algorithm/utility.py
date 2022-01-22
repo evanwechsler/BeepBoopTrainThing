@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import PassengerArrival
 
 
 def plotDist(dist: pd.DataFrame):
@@ -11,6 +12,10 @@ def getDist():
     splitDist = [arrivalDist.loc[arrivalDist["Station"] == i] for i in ["A", "B", "C"]]
     return splitDist
 
+def csvToPassengerArrivals():
+    arrivalDist = pd.read_csv("./ArrivalDistributions.csv")
+    arrivals = PassengerArrival.PassengerArrivals(arrivalFrame=arrivalDist)
+    return arrivals
 
 def main():
     dists = getDist()

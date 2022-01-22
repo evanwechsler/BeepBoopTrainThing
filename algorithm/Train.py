@@ -41,13 +41,13 @@ class Car:
 
     def isFull(self):
         return self.numPassengers == self.maxCapacity
-        
+
 
 class Train:
     stations = ["A", "B", "C", "U"]
 
     def __init__(self, station=None, moving=False, dwelling=False, numCars=0) -> None:
-        if station not in self.stations:
+        if station not in self.stations and station != None:
             raise Exception(f"Station must be one of {self.stations}")
         self.station = station
         self.moving = moving
@@ -56,6 +56,7 @@ class Train:
         self.cars: List[Car] = []
         self.numPassengers = 0
         self.maxCapacity = numCars * Car.maxCapacity
+        self.arrivalTimes = []
 
     def isFull(self):
         return self.numPassengers == self.maxCapacity
@@ -95,9 +96,10 @@ def main():
     l4 = L4()
     l8 = L8()
 
-    remaining = l4.addPassengers(143)
+    remaining = l4.addPassengers(300)
     for car in l4.cars:
         print(car.numPassengers)
+    print(remaining)
 
 
 if __name__ == "__main__":

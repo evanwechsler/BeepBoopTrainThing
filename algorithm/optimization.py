@@ -1,5 +1,9 @@
-from Train import L4, L8
-from utlility import getDist
+from typing import List
+from PassengerArrival import PassengerArrivals
+from Train import L4, L8, Station, Train
+from permute import perm_unique
+from utility import csvToPassengerArrivals, getDist
+from itertools import permutations
 
 
 passengerDist = getDist()
@@ -8,8 +12,23 @@ dwellTime = 3 * 60
 AtoB = 8 * 60
 BtoC = 9 * 60
 CtoU = 11 * 60
+numL4s = 4
+numL8s = 12
 
-l4s = [L4() for i in range(4)]
-l8s = [L8() for i in range(8)]
+stationA = Station()
+stationB = Station()
+stationC = Station()
+stationU = Station()
 
-curTime = 7 * 60 * 60
+stations = [stationA, stationB, stationC, stationU]
+
+trains = [4 for i in range(numL4s)] + [8 for i in range(numL8s)]
+
+trainPermutations = list(perm_unique(trains))
+
+
+def createSimpleSchedule(trains: List[Train]):
+    pass
+
+
+print(len(trainPermutations))

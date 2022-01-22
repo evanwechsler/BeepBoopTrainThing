@@ -2,8 +2,6 @@ from typing import List
 from utlility import getDist
 from random import randint
 
-# Init
-
 
 class Car:
     maxCapacity = 50

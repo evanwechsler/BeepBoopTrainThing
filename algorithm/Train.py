@@ -4,6 +4,19 @@ import pandas as pd
 from random import randint
 
 
+class Station:
+    def __init__(self, passengers=0) -> None:
+        self.passengers = passengers
+
+
+class Passenger:
+    def __init__(self) -> None:
+        self.waitTime = 0
+
+    def incrTime(self):
+        self.waitTime += 1
+
+
 class Car:
     maxCapacity = 50
 

@@ -4,6 +4,7 @@ import PassengerArrival
 
 
 def plotDist(dist: pd.DataFrame):
+
     dist.plot(x="Arrival Time", y="# Passengers")
 
 

@@ -11,3 +11,5 @@ CtoU = 11 * 60
 
 l4s = [L4() for i in range(4)]
 l8s = [L8() for i in range(8)]
+
+curTime = 7 * 60 * 60

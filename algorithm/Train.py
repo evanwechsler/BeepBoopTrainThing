@@ -1,105 +1,85 @@
-from typing import ItemsView, List
+from typing import List
 from utility import getDist
 import pandas as pd
 from random import randint
 
 
 class Station:
-    def __init__(self, passengers=0) -> None:
-        self.passengers = passengers
+    def __init__(self) -> None:
+        self.passengers: List[Passenger] = []
+        self.numPassengers = 0
+
+    def addPassengers(self, numPassengers: int):
+        self.passengers += [Passenger() for i in range(numPassengers)]
+        self.numPassengers += numPassengers
+
+    def boardPassengers(self, numPassengers: int):
+        boardingPassengers = self.passengers[:numPassengers]
+        self.passengers = self.passengers[numPassengers:]
+        self.numPassengers -= numPassengers
+        return boardingPassengers
 
 
 class Passenger:
     def __init__(self) -> None:
         self.waitTime = 0
 
-    def incrTime(self):
-        self.waitTime += 1
-
-
-class Car:
-    maxCapacity = 50
-
-    def __init__(self, numPassengers=0) -> None:
-        if numPassengers > self.maxCapacity:
-            raise Exception(f"Number of passengers has exceeded {self.maxCapacity}")
-        else:
-            self.numPassengers = numPassengers
-
-    # Tries to add as many passengers to the car as possible
-    # Returns the number of remaining passengers
-    def addPassengers(self, newPassengers=1):
-        if self.isFull():
-            return newPassengers
-        if self.numPassengers + newPassengers > self.maxCapacity:
-            remaining = newPassengers - (self.maxCapacity - self.numPassengers)
-            self.numPassengers = self.maxCapacity
-            return remaining
-        else:
-            self.numPassengers += newPassengers
-            return 0
-
-    def isFull(self):
-        return self.numPassengers == self.maxCapacity
+    def incrTime(self, timeToAdd):
+        self.waitTime += timeToAdd
 
 
 class Train:
     stations = ["A", "B", "C", "U"]
+    maxCapacity = 0
 
-    def __init__(self, station=None, moving=False, dwelling=False, numCars=0) -> None:
+    def __init__(self, station=None, moving=False, dwelling=False, capacity=0) -> None:
         if station not in self.stations and station != None:
             raise Exception(f"Station must be one of {self.stations}")
         self.station = station
         self.moving = moving
         self.dwelling = dwelling
-        self.numCars = numCars
-        self.cars: List[Car] = []
+        self.passengers = []
         self.numPassengers = 0
-        self.maxCapacity = numCars * Car.maxCapacity
+        self.maxCapacity = capacity
         self.arrivalTimes = []
+
+    # Tries to add as many passengers to the car as possible
+    # Returns the number of remaining passengers
+    def pickUpPassengers(self, station: Station):
+        if self.isFull():
+            return
+        numNewPassengers = station.numPassengers
+        if self.numPassengers + numNewPassengers > self.maxCapacity:
+            availableSeats = self.maxCapacity - self.numPassengers
+            self.numPassengers = self.maxCapacity
+            self.passengers += station.boardPassengers(availableSeats)
+        else:
+            self.numPassengers += numNewPassengers
+            self.passengers += station.boardPassengers(numNewPassengers)
 
     def isFull(self):
         return self.numPassengers == self.maxCapacity
 
-    # Tries to add passengers to train.
-    # Fills up cars in order
-    # Returns the number of overflow passengers
-    def addPassengers(self, newPassengers):
-        if self.isFull():
-            return newPassengers
-        else:
-            for car in self.cars:
-                remaining = car.addPassengers(newPassengers)
-                if remaining == 0:
-                    self.numPassengers += newPassengers
-                    return 0
-                else:
-                    self.numPassengers += newPassengers - remaining
-                    newPassengers = remaining
-
-            return newPassengers
-
 
 class L4(Train):
     def __init__(self, station=None, moving=False, dwelling=False) -> None:
-        super().__init__(station, moving, dwelling, 4)
-        self.cars = [Car() for i in range(4)]
+        super().__init__(station, moving, dwelling, 400)
 
 
 class L8(Train):
     def __init__(self, station=None, moving=False, dwelling=False) -> None:
-        super().__init__(station, moving, dwelling, 8)
-        self.cars = [Car() for i in range(8)]
+        super().__init__(station, moving, dwelling, 800)
 
 
 def main():
     l4 = L4()
     l8 = L8()
+    station = Station()
+    station.addPassengers(850)
+    l8.pickUpPassengers(station)
 
-    remaining = l4.addPassengers(300)
-    for car in l4.cars:
-        print(car.numPassengers)
-    print(remaining)
+    print(l8.numPassengers)
+    print(station.numPassengers)
 
 
 if __name__ == "__main__":

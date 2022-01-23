@@ -1,7 +1,4 @@
 from typing import List
-from utility import getDist
-import pandas as pd
-from random import randint
 
 
 class Station:
@@ -18,14 +15,6 @@ class Station:
         self.passengers = self.passengers[numPassengers:]
         self.numPassengers -= numPassengers
         return boardingPassengers
-
-
-class Passenger:
-    def __init__(self) -> None:
-        self.waitTime = 0
-
-    def incrTime(self, timeToAdd):
-        self.waitTime += timeToAdd
 
 
 class Train:
@@ -59,6 +48,22 @@ class Train:
 
     def isFull(self):
         return self.numPassengers == self.maxCapacity
+
+
+class TrainLine:
+    def __init__(self, stations: List[Station], trains: List[Train]) -> None:
+        self.curTime = 0
+        self.stations = stations
+        self.trains = trains
+
+
+class Passenger:
+    def __init__(self, arrivalTime) -> None:
+        self.waitTime = 0
+        self.arrivalTime = arrivalTime
+
+    def incrTime(self, timeToAdd):
+        self.waitTime += timeToAdd
 
 
 class L4(Train):

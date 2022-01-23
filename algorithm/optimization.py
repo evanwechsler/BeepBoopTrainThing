@@ -35,11 +35,19 @@ trains = [L4() for i in range(numL4s)] + [L8() for i in range(numL8s)]
 def createSimpleSchedule(trains: List[Train]):
     # 7:00
     curTime = 7 * 3600
+
+    def cumulative(lists):
+        cu_list = []
+        length = len(lists)
+        cu_list = [sum(lists[0:x:1]) for x in range(0, length + 1)]
+        return cu_list[1:]
+
     for train in trains:
-        arrivalTimes = [curTime + i for i in travelTimes]
+        arrivalTimes = [secondsToTime(curTime + i) for i in cumulative(travelTimes)]
         train.arrivalTimes = arrivalTimes
         curTime += 10 * 60
+        print(train.arrivalTimes)
 
 
 # print(len(trainPermutations))
-# createSimpleSchedule(trains)
+createSimpleSchedule(trains)

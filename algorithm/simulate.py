@@ -5,7 +5,7 @@ from Train import L4, Station, Train, TrainLine
 
 def initScene():
     stations = [Station() for i in range(3)]
-
+    
     trainLine = TrainLine(stations)
 
 

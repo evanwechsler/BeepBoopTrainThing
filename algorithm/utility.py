@@ -18,6 +18,19 @@ def csvToPassengerArrivals():
     arrivals = PassengerArrival.PassengerArrivals(arrivalFrame=arrivalDist)
     return arrivals
 
+def convertMinsToTime(mins):
+    hour  =  7
+    while(mins >= 60):
+        mins -= 60
+        hour += 1
+    minutes = mins
+
+    time = str(hour) +":"
+    if(minutes < 10):
+        time += "0"
+    time += str(mins)
+    return time
+
 def main():
     dists = getDist()
     plt.figure()

@@ -1,21 +1,5 @@
 from typing import List
-
-
-class Station:
-    def __init__(self) -> None:
-        self.passengers: List[Passenger] = []
-        self.numPassengers = 0
-
-    def addPassengers(self, numPassengers: int):
-        self.passengers += [Passenger() for i in range(numPassengers)]
-        self.numPassengers += numPassengers
-
-    def boardPassengers(self, numPassengers: int):
-        boardingPassengers = self.passengers[:numPassengers]
-        self.passengers = self.passengers[numPassengers:]
-        self.numPassengers -= numPassengers
-        return boardingPassengers
-
+from station import Station
 
 class Train:
     stations = ["A", "B", "C", "U"]
@@ -50,20 +34,7 @@ class Train:
         return self.numPassengers == self.maxCapacity
 
 
-class TrainLine:
-    def __init__(self, stations: List[Station], trains: List[Train]) -> None:
-        self.curTime = 0
-        self.stations = stations
-        self.trains = trains
 
-
-class Passenger:
-    def __init__(self, arrivalTime) -> None:
-        self.waitTime = 0
-        self.arrivalTime = arrivalTime
-
-    def incrTime(self, timeToAdd):
-        self.waitTime += timeToAdd
 
 
 class L4(Train):
